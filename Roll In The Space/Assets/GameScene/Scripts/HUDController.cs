@@ -79,6 +79,8 @@ public class HUDController : MonoBehaviour {
 		highScore = PlayerPrefs.GetInt ("HighScore", 0);
 		if (distance > highScore) {
 			PlayerPrefs.SetInt ("HighScore", distance);
+			// TODO :: DB
+
 			Invoke("ScoreMove",2f);
 		}
 	}

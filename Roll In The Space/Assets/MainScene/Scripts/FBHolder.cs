@@ -127,4 +127,9 @@ public class FBHolder : MonoBehaviour
 			);
 	}
 
+	public void StartGame()
+	{
+		Application.LoadLevel("GameScene");
+	}
+
 }

@@ -74,6 +74,8 @@
      <Compile Include="Assets\GameScene\Scripts\TouchListener.cs" />
      <Compile Include="Assets\MainScene\Scripts\FBHolder.cs" />
      <Compile Include="Assets\MainScene\Scripts\Util.cs" />
+     <Compile Include="Assets\MySQLCS.cs" />
+     <Compile Include="Assets\TestScene\DataManager.cs" />
      <None Include="Assets\FB\Plugins\Android\facebook\res\layout\com_facebook_usersettingsfragment.xml" />
      <None Include="Assets\FB\Plugins\Android\facebook\res\layout\com_facebook_tooltip_bubble.xml" />
      <None Include="Assets\FB\Plugins\Android\facebook\res\drawable\com_facebook_picker_list_selector_background_transition.xml" />
@@ -129,6 +131,15 @@
  </Reference>
  <Reference Include="IFacebook">
  <HintPath>D:/git/RITS/Roll In The Space/Assets/FB/Facebook/Scripts/IFacebook.dll</HintPath>
+ </Reference>
+ <Reference Include="MySql.Data">
+ <HintPath>D:/git/RITS/Roll In The Space/Assets/Plugins/MySql.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Data">
+ <HintPath>D:/git/RITS/Roll In The Space/Assets/Plugins/System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Drawing">
+ <HintPath>D:/git/RITS/Roll In The Space/Assets/Plugins/System.Drawing.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>D:/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

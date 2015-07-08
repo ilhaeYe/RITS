@@ -1,10 +1,32 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MainScene\Scripts\FBHolder.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\TestScene\DataManager.cs">
     <Files>
-      <File FileName="Assets\MainScene\Scripts\FBHolder.cs" Line="28" Column="4" />
-      <File FileName="Assets\MainScene\Scripts\Util.cs" Line="45" Column="51" />
+      <File FileName="Assets\TestScene\DataManager.cs" Line="75" Column="24" />
+      <File FileName="Assets\MySQLCS.cs" Line="23" Column="44" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="FB" expanded="True">
+              <Node name="Facebook" expanded="True">
+                <Node name="Scripts" expanded="True" />
+              </Node>
+            </Node>
+            <Node name="GameScene" expanded="True">
+              <Node name="Scripts" expanded="True" />
+            </Node>
+            <Node name="MainScene" expanded="True">
+              <Node name="Scripts" expanded="True" />
+            </Node>
+            <Node name="TestScene" expanded="True">
+              <Node name="DataManager.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
