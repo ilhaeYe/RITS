@@ -46,6 +46,21 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Asset\Scripts\BlockScript.cs" />
+     <Compile Include="Assets\Asset\Scripts\ButtonScript.cs" />
+     <Compile Include="Assets\Asset\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Asset\Scripts\CreateBGScript.cs" />
+     <Compile Include="Assets\Asset\Scripts\CreateGroundScript.cs" />
+     <Compile Include="Assets\Asset\Scripts\DataManager.cs" />
+     <Compile Include="Assets\Asset\Scripts\DeleteGroundScript.cs" />
+     <Compile Include="Assets\Asset\Scripts\FBHolder.cs" />
+     <Compile Include="Assets\Asset\Scripts\HUDController.cs" />
+     <Compile Include="Assets\Asset\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Asset\Scripts\SpeedItemScript.cs" />
+     <Compile Include="Assets\Asset\Scripts\SystemController.cs" />
+     <Compile Include="Assets\Asset\Scripts\TouchListener.cs" />
+     <Compile Include="Assets\Asset\Scripts\UBlockScript.cs" />
+     <Compile Include="Assets\Asset\Scripts\Util.cs" />
      <Compile Include="Assets\FB\Examples\Scripts\ConsoleBase.cs" />
      <Compile Include="Assets\FB\Examples\Scripts\GameGroupsConsole.cs" />
      <Compile Include="Assets\FB\Examples\Scripts\InteractiveConsole.cs" />
@@ -62,20 +77,7 @@
      <Compile Include="Assets\FB\Facebook\Scripts\IOSFacebook.cs" />
      <Compile Include="Assets\FB\Facebook\Scripts\IOSFacebookLoader.cs" />
      <Compile Include="Assets\FB\Facebook\Scripts\NativeDialogModes.cs" />
-     <Compile Include="Assets\GameScene\Scripts\BlockScript.cs" />
-     <Compile Include="Assets\GameScene\Scripts\CameraController.cs" />
-     <Compile Include="Assets\GameScene\Scripts\CreateBGScript.cs" />
-     <Compile Include="Assets\GameScene\Scripts\CreateGroundScript.cs" />
-     <Compile Include="Assets\GameScene\Scripts\DeleteGroundScript.cs" />
-     <Compile Include="Assets\GameScene\Scripts\HUDController.cs" />
-     <Compile Include="Assets\GameScene\Scripts\PlayerController.cs" />
-     <Compile Include="Assets\GameScene\Scripts\SpeedItemScript.cs" />
-     <Compile Include="Assets\GameScene\Scripts\SystemController.cs" />
-     <Compile Include="Assets\GameScene\Scripts\TouchListener.cs" />
-     <Compile Include="Assets\MainScene\Scripts\FBHolder.cs" />
-     <Compile Include="Assets\MainScene\Scripts\Util.cs" />
-     <Compile Include="Assets\MySQLCS.cs" />
-     <Compile Include="Assets\TestScene\DataManager.cs" />
+     <Compile Include="Assets\TestScene\MySQLCS.cs" />
      <None Include="Assets\FB\Plugins\Android\facebook\res\layout\com_facebook_usersettingsfragment.xml" />
      <None Include="Assets\FB\Plugins\Android\facebook\res\layout\com_facebook_tooltip_bubble.xml" />
      <None Include="Assets\FB\Plugins\Android\facebook\res\drawable\com_facebook_picker_list_selector_background_transition.xml" />

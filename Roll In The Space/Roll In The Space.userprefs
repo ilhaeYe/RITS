@@ -1,27 +1,24 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\TestScene\DataManager.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Asset\Scripts\HUDController.cs">
     <Files>
-      <File FileName="Assets\TestScene\DataManager.cs" Line="75" Column="24" />
-      <File FileName="Assets\MySQLCS.cs" Line="23" Column="44" />
+      <File FileName="Assets\Asset\Scripts\PlayerController.cs" Line="104" Column="3" />
+      <File FileName="Assets\Asset\Scripts\HUDController.cs" Line="111" Column="38" />
+      <File FileName="Assets\Asset\Scripts\SystemController.cs" Line="32" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
+            <Node name="Asset" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="HUDController.cs" selected="True" />
+              </Node>
+            </Node>
             <Node name="FB" expanded="True">
               <Node name="Facebook" expanded="True">
                 <Node name="Scripts" expanded="True" />
               </Node>
-            </Node>
-            <Node name="GameScene" expanded="True">
-              <Node name="Scripts" expanded="True" />
-            </Node>
-            <Node name="MainScene" expanded="True">
-              <Node name="Scripts" expanded="True" />
-            </Node>
-            <Node name="TestScene" expanded="True">
-              <Node name="DataManager.cs" selected="True" />
             </Node>
           </Node>
         </State>
