@@ -9,16 +9,27 @@ public class FBHolder : MonoBehaviour
 	public GameObject UIFBNotLoggedIn;
 	public GameObject UIFBAvatar;
 	public GameObject UIFBUserName;
+	public GameObject UIFBHighScore;
+	public GameObject UIFBAchievement;
+
+	public GameObject RankingView;
+	private RankingViewController rankingViewController;
+
+	//public GameObject DB;
+	//private DataManager dataManager;
 
 	private Dictionary<string,string> profile = null;
 
 	void Start ()
 	{
-	
+
 	}
 
 	void Awake ()
 	{
+		//dataManager = DB.GetComponent<DataManager>();
+		if(RankingView != null) rankingViewController = RankingView.GetComponent<RankingViewController>();
+
 		enabled = false;
 		FB.Init (SetInit, OnHideUnity);
 		if (!FB.IsLoggedIn) {
@@ -30,9 +41,10 @@ public class FBHolder : MonoBehaviour
 	{
 		Debug.Log ("FB Init done.");
 		//enabled = true; // "enabled" is a property inherited from MonoBehaviour                  
-		if (FB.IsLoggedIn) {                                                                                        
+		if (FB.IsLoggedIn) {
 			Debug.Log ("Already logged in");
 			DealWithFBMenus(true);
+			GetMyRankingAreaData();
 		}else{
 			DealWithFBMenus(false);
 		}
@@ -60,11 +72,14 @@ public class FBHolder : MonoBehaviour
 		if (FB.IsLoggedIn) {
 			Debug.Log ("FB login worked!");
 			DealWithFBMenus(true);
+			//FBGetAccessToken();
+			GetMyRankingAreaData();
 		}else{
 			Debug.Log ("FB login fail!");
 			DealWithFBMenus(false);
 		}
 	}
+
 
 	void DealWithFBMenus(bool isLoggedIn)
 	{
@@ -123,6 +138,21 @@ public class FBHolder : MonoBehaviour
 			message: "This game is awesome, join me now!",
 			title: "Invite your friends to join you"
 			);
+	}
+
+	public void GetMyRankingAreaData()
+	{
+		if(FB.IsLoggedIn)
+		{
+			//dataManager.GetUserAreaRankData(FB.UserId);
+			if(RankingView != null){
+				Debug.Log("TODO Ranking system");
+				//rankingViewController
+			}else{
+				Debug.Log("RankingView is null");
+			}
+
+		}
 	}
 
 	public void StartGame()

@@ -54,7 +54,9 @@
     <Compile Include="Assets\Asset\Scripts\DeleteGroundScript.cs" />
     <Compile Include="Assets\Asset\Scripts\FBHolder.cs" />
     <Compile Include="Assets\Asset\Scripts\HUDController.cs" />
+    <Compile Include="Assets\Asset\Scripts\PageButtonScript.cs" />
     <Compile Include="Assets\Asset\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Asset\Scripts\RankingViewController.cs" />
     <Compile Include="Assets\Asset\Scripts\SpeedItemScript.cs" />
     <Compile Include="Assets\Asset\Scripts\SystemController.cs" />
     <Compile Include="Assets\Asset\Scripts\TouchListener.cs" />
@@ -76,7 +78,6 @@
     <Compile Include="Assets\FB\Facebook\Scripts\IOSFacebook.cs" />
     <Compile Include="Assets\FB\Facebook\Scripts\IOSFacebookLoader.cs" />
     <Compile Include="Assets\FB\Facebook\Scripts\NativeDialogModes.cs" />
-    <Compile Include="Assets\TestScene\MySQLCS.cs" />
     <None Include="Assets\FB\Plugins\Android\facebook\res\layout\com_facebook_usersettingsfragment.xml" />
     <None Include="Assets\FB\Plugins\Android\facebook\res\layout\com_facebook_tooltip_bubble.xml" />
     <None Include="Assets\FB\Plugins\Android\facebook\res\drawable\com_facebook_picker_list_selector_background_transition.xml" />
@@ -132,6 +133,9 @@
     </Reference>
     <Reference Include="IFacebook">
       <HintPath>D:\git\RITS\Roll In The Space\Assets\FB\Facebook\Scripts\IFacebook.dll</HintPath>
+    </Reference>
+    <Reference Include="LitJson">
+      <HintPath>D:\git\RITS\Roll In The Space\Assets\Plugins\LitJson.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
       <HintPath>D:\git\RITS\Roll In The Space\Assets\Plugins\MySql.Data.dll</HintPath>

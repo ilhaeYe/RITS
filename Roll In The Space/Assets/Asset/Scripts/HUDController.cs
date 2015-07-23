@@ -17,7 +17,7 @@ public class HUDController : MonoBehaviour {
 	private int scoreMoveSpeed = 10;
 	private int tempScore;
 
-//	public GameObject DB;
+	//public GameObject DB;
 	private DataManager dataManager;
 	void Awake()
 	{
@@ -30,7 +30,7 @@ public class HUDController : MonoBehaviour {
 		LoadData ();
 		tempScore = highScore;
 //		playerController = player.GetComponent<PlayerController>();
-//		dataManager = DB.GetComponent<DataManager>();
+		dataManager = DataManager.Instace;
 	}
 
 	// Update is called once per frame
@@ -85,8 +85,8 @@ public class HUDController : MonoBehaviour {
 			PlayerPrefs.SetInt ("HighScore", distance);
 			// TODO :: DB
 			Invoke("ScoreMove",2f);
-			StartCoroutine("DBUpdate");
-
+			//if(FB.IsLoggedIn)
+				//dataManager.UpdateUserScore(FB.UserId,distance);
 		}
 	}
 	public void ScoreMove()
@@ -94,35 +94,6 @@ public class HUDController : MonoBehaviour {
 		scoreMoveSpeed = (int)((distance - highScore) * 0.1f);
 		moveScore = true;
 	}
-	IEnumerator DBUpdate()
-	{
-		if(FB.IsLoggedIn)
-		{
-			//string url = "http://ilhaeye.tk/DBController.php";
-			// for debug
-			string url = "http://192.168.219.161/DBController.php";
-			string action = "updateScore";
-			string score = "" + distance;
-			url = url + "?action=" + action + "&fb_id=" + FB.UserId + "&score=" + score;
-			WWW www = new WWW(url);
-			yield return www;
-			if(www.error == null)
-			{
-				Debug.Log("WWW OK! : " + www.text);
-			}else{
-				Debug.Log("WWW Error : " + www.error);
 
-			}
-
-			//bool isInDB = dataManager.SearchDB(FB.UserId);
-			//if(isInDB) dataManager.UpdateDB(FB.UserId,distance);
-			//else dataManager.InsertDB(FB.UserId,distance);
-		}
-		else{
-			// guestRank
-		}
-		//Debug.Log( "FB userID : " + FB.UserId);
-		//dataManager.
-	}
 
 }

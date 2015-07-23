@@ -130,6 +130,9 @@
  <Reference Include="IFacebook">
  <HintPath>D:/git/RITS/Roll In The Space/Assets/FB/Facebook/Scripts/IFacebook.dll</HintPath>
  </Reference>
+ <Reference Include="LitJson">
+ <HintPath>D:/git/RITS/Roll In The Space/Assets/Plugins/LitJson.dll</HintPath>
+ </Reference>
  <Reference Include="MySql.Data">
  <HintPath>D:/git/RITS/Roll In The Space/Assets/Plugins/MySql.Data.dll</HintPath>
  </Reference>

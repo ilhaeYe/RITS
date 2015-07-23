@@ -8,257 +8,126 @@ using System.Collections.Generic;
 
 public class DataManager : MonoBehaviour {
 
-	// values to match the database columns
-	int id, score;
-	string fbid;
+	// singleton
+	public static DataManager current = null;
+	public static GameObject container = null;
 
-	bool saving = false;
-	bool loading = false;
-
-	// MySQL data
-	string constr = "Server=localhost;Database=RITS;User ID=user;Password=0806;Pooling=true";
-	MySqlConnection con = null;
-	MySqlCommand cmd = null;
-	MySqlDataReader rdr = null;
-	MySqlError err = null;
-	GameObject[] bodies;
-
-	//object definitions
-	public struct data
+	public static DataManager Instace
 	{
-		public int rank_id, score;
-		public string fb_id;
-		public DateTime dt;
-	}
-	// collection container
-	List<data>_items;
-
-	void Awake()
-	{
-		try
-		{
-			// setup the connection element
-			con = new MySqlConnection(constr);
-
-			//lets see if we can open the connection
-			con.Open();
-			Debug.Log("Connection State : " + con.State);
-		}catch(Exception ex)
-		{
-			Debug.Log(ex.ToString());
+		get{
+			if(current==null)
+			{
+				container = new GameObject();
+				container.name = "DataManager";
+				current = container.AddComponent(typeof(DataManager)) as DataManager;
+			}
+			return current;
 		}
 	}
 
-	void OnApplicationQuit()
-	{
-		Debug.Log ("killing con");
-		if(con != null)
-		{
-			Debug.Log ("con is not null");
-			if(con.State != ConnectionState.Closed)
-				con.Close();
-			con.Dispose();
-			Debug.Log ("con is kiied");
-		}
-	}
+	// Web
+	// delegate for event 
+	public delegate void HttpRequestDelegate(int _id, WWW www);
+	// event Handler
+	public event HttpRequestDelegate OnHttpRequest;
 
-	// Use this for initialization
-	void Start () {
+	//bool result = false;
+	//string url = "http://ilhaeye.tk/DBController.php";
+	string baseURL = "http://192.168.219.161/DBController.php";
+	string descURL;
+	const int DEFAULT_GET_DATA_SIZE = 30;
+	private Dictionary<string,string> urlLinkData = new Dictionary<string, string>();
+	//public List<UserData> dataList = new List<UserData>();
 	
+	public void UpdateUserScore(int request_id, string _fb_id, int _score)
+	{
+		urlLinkData.Clear();
+		urlLinkData.Add("?action=","updateScore");
+		urlLinkData.Add("&fb_id=",_fb_id);
+		urlLinkData.Add("&score=",""+_score);
+
+		MakeURL();
+		//MakeURL("updateScore",_fb_id,_score);
+		StartCoroutine(Co_RequestURL(request_id));
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public void GetUserRankData(int request_id, string _fb_id)
+	{
+		urlLinkData.Clear();
+		urlLinkData.Add("?action=","getTargetRank");
+		urlLinkData.Add("&fb_id=",_fb_id);
+
+		MakeURL();
+		//MakeURL("getTargetRank",_fb_id);
+		StartCoroutine(Co_RequestURL(request_id));
+	}
+	public void GetUserAreaRankData(int request_id, string _fb_id, int _getDataSize = DEFAULT_GET_DATA_SIZE)
+	{
+		urlLinkData.Clear();
+		urlLinkData.Add("?action=","getTargetAreaRank");
+		urlLinkData.Add("&fb_id=",_fb_id);
+		urlLinkData.Add("&getDataSize=",""+_getDataSize);
+		
+		MakeURL();
+		//MakeURL("getTargetAreaRank",_fb_id);
+		StartCoroutine(Co_RequestURL(request_id));
+	}
+	public void GetUserAllRankData(int request_id, int _pageIndex = 0, int _getDataSize = DEFAULT_GET_DATA_SIZE)
+	{
+		urlLinkData.Clear();
+		urlLinkData.Add("?action=","getAllRank");
+		urlLinkData.Add("&pageIndex=",""+_pageIndex);
+		urlLinkData.Add("&getDataSize=",""+_getDataSize);
+		
+		MakeURL();
+		//MakeURL("getAllRank", _pageIndex);
+		StartCoroutine(Co_RequestURL(request_id));
 	}
 
-	public void InsertDB(string id, int score)
+	void MakeURL()
 	{
-		saving = true;
-		InsertRankData(id, score);
-
-		LogItems();
-		saving = false;
-	}
-	public void UpdateDB(string id, int score)
-	{
-		saving = true;
-		UpdateRankData(id, score);
-
-		LogItems();
-		saving = false;
-	}
-	public bool SearchDB(string id)
-	{
-		loading = true;
-		bool result = SearchRankData(id);
-		loading = false;
-		return result;
-	}
-	public void ReadAllDB()
-	{
-		loading = true;
-		// lets read the items from the database
-		ReadRankData();
-		// now display what is known about them to our log
-		LogItems();
-		loading = false;
+		descURL = baseURL;
+		foreach(var pair in urlLinkData)
+			descURL += pair.Key + pair.Value;
 	}
 
-	void InsertRankData(string _fbid, int _score)
+//	void MakeURL(string action, int _pageIndex)
+//	{
+//		descURL = baseURL + "?action=" + action + "&pageIndex=" + _pageIndex;
+//	}
+////	void MakeURL(string action, int _pageIndex, int _getDataSize)
+////	{
+////		descURL = baseURL + "?action=" + action + "&pageIndex=" + _pageIndex + "&getDataSize=" + _getDataSize;
+////	}
+//	void MakeURL(string action, string _fb_id)
+//	{
+//		descURL = baseURL + "?action=" + action + "&fb_id=" + _fb_id;
+//	}
+////	void MakeURL(string action, string _fb_id, int _getDataSize)
+////	{
+////		descURL = baseURL + "?action=" + action + "&fb_id=" + _fb_id + "&getDataSize=" + _getDataSize;
+////	}
+//	void MakeURL(string action, string _fb_id, int _score)
+//	{
+//		string scoreStr = "" + _score;
+//		descURL = baseURL + "?action=" + action + "&fb_id=" + _fb_id + "&score=" + scoreStr;
+//	}
+
+	IEnumerator Co_RequestURL(int request_id)
 	{
-		string query = String.Empty;
-		// Error trapping in the simplest form
-		try
+		WWW www = new WWW(descURL);
+		yield return www;
+		if(www.error == null)
 		{
-			query = "INSERT INTO user_rank (fb_id, score) VALUES (?fb_id, ?score)";
-			if(con.State != ConnectionState.Open)
-				con.Open();
-			using(con)
+//			result = true;
+			Debug.Log("WWW OK! : " + www.text);
+			if(OnHttpRequest != null)
 			{
-				using(cmd = new MySqlCommand(query,con))
-				{
-					MySqlParameter oParam1 = cmd.Parameters.Add("?fb_id", MySqlDbType.VarChar);
-					oParam1.Value = _fbid;
-					MySqlParameter oParam2 = cmd.Parameters.Add("?score", MySqlDbType.UInt16);
-					oParam2.Value = _score;
-					cmd.ExecuteNonQuery();
-				}
+				OnHttpRequest(request_id, www);
 			}
+		}else{
+//			result = false;
+			Debug.Log("WWW Error : " + www.error);
 		}
-		catch(Exception ex)
-		{
-			Debug.Log(ex.ToString());
-		}
-		finally
-		{
-		}
+		www.Dispose();
 	}
-	void UpdateRankData(string _fbid, int _score)
-	{
-		string query = string.Empty;
-
-		// Error trapping in the simplest form
-		try
-		{
-			query = "UPDATE user_rank SET score=?score WHERE fb_id=?fb_id";
-			if(con.State != ConnectionState.Open)
-				con.Open();
-			using(con)
-			{
-				using(cmd = new MySqlCommand(query,con))
-				{
-					MySqlParameter oParam1 = cmd.Parameters.Add("?fb_id", MySqlDbType.VarChar);
-					oParam1.Value = _fbid;
-					MySqlParameter oParam2 = cmd.Parameters.Add("?score", MySqlDbType.UInt16);
-					oParam2.Value = _score;
-					cmd.ExecuteNonQuery();
-				}
-			}
-		}
-		catch(Exception ex)
-		{
-			Debug.Log(ex.ToString());
-		}
-		finally
-		{
-		}
-	}
-
-	bool SearchRankData(string _fbid)
-	{
-		bool result = false;
-		string query = string.Empty;
-		// Error trapping in the simplest form
-		try
-		{
-			query = "SELECT * FROM user_rank WHERE fb_id=?fb_id";
-			if(con.State != ConnectionState.Open)
-				con.Open();
-			using(con)
-			{
-				using(cmd = new MySqlCommand(query,con))
-				{
-					MySqlParameter oParam1 = cmd.Parameters.Add("?fb_id", MySqlDbType.VarChar);
-					oParam1.Value = _fbid;
-					rdr = cmd.ExecuteReader();
-					if(rdr.HasRows)
-						result = true;
-					rdr.Dispose();
-				}
-			}
-		}
-		catch(Exception ex)
-		{
-			Debug.Log(ex.ToString());
-		}
-		finally
-		{
-		}
-		return result;
-	}
-
-	void ReadRankData()
-	{
-		string query = string.Empty;
-		if(_items == null)
-			_items = new List<data>();
-		if(_items.Count > 0)
-			_items.Clear();
-		// Error trapping in the simplest form
-		try
-		{
-			query = "SELECT * FROM user_rank";
-			if(con.State != ConnectionState.Open)
-				con.Open();
-			using(con)
-			{
-				using(cmd = new MySqlCommand(query,con))
-				{
-					rdr = cmd.ExecuteReader();
-					if(rdr.HasRows)
-					{
-						while(rdr.Read())
-						{
-							data itm = new data();
-							itm.rank_id = int.Parse(rdr["rank_id"].ToString());
-							itm.fb_id = rdr["fb_id"].ToString();
-							itm.score = int.Parse(rdr["score"].ToString());
-							itm.dt = DateTime.Parse(rdr["dt"].ToString());
-							_items.Add(itm);
-						}
-					}
-					rdr.Dispose();
-				}
-			}
-		}catch(Exception ex)
-		{
-			Debug.Log(ex.ToString());
-		}
-		finally
-		{
-		}
-	}
-
-	/// <summary>
-	/// Lets show what was read back to the log window
-	/// </summary>
-	void LogItems()
-	{
-		if(_items != null)
-		{
-			if(_items.Count > 0)
-			{
-				foreach(data itm in _items)
-				{
-					Debug.Log("===" + itm.rank_id + "===");
-					Debug.Log("fb_id : " + itm.fb_id);
-					Debug.Log("score : " + itm.score);
-					Debug.Log("dt : " + itm.dt);
-				}
-			}
-		}
-	}
-
-
 }
