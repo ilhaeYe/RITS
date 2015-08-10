@@ -7,24 +7,32 @@ public class SystemController : MonoBehaviour {
 	public List<GameObject> prefabs;
 	public GameObject bgPrefabs;
 	public List<GameObject> backGrounds;
-	public bool isPause = true;
-	public AudioClip baseSE;
 
 	private bool keyAvailable = false;
 	private GameObject player;
 	private PlayerController playerController;
 	private Animator anim_gameOver;
 	private Text spacebar;
-	private AudioSource bgSound;
 	private HUDController HUD;
+
+	// pause
+	public bool isStartingPause = true;
+	public bool pauseState = false;
+	public bool pauseEnabled = false;
+	public GameObject resumeButton;
+	public GameObject restartButton;
+	public GameObject mainButton;
+	public GameObject BGObject;
+	private BGPlayerScript bgController;
+
 	void Awake()
 	{
 		player = GameObject.Find ("Player");
 		playerController = player.GetComponent<PlayerController> ();
 		spacebar = GameObject.Find ("PressSpaceBarText").GetComponent<Text> ();
-		bgSound = GetComponent<AudioSource> ();
 		HUD = GameObject.Find ("HUDCanvas").GetComponent<HUDController> ();
 		anim_gameOver = GameObject.Find ("HUDCanvas").GetComponent<Animator> ();
+		bgController = BGObject.GetComponent<BGPlayerScript>();
 	}
 
 	void Start()
@@ -34,31 +42,25 @@ public class SystemController : MonoBehaviour {
 
 	public void InitGame()
 	{
-		HUD.LoadData ();
+		Time.timeScale = 1;
+		ShowPauseMenu(false);
+		HUD.LoadScoreData ();
 		keyAvailable = false;
 		player.transform.position = new Vector3(0, 1, 1);
 		playerController.isLive = true;
 		backGrounds [0].transform.position = new Vector3(0, 0, 0);
-
-//		// clear ground gameobjects
-//		int size = grounds.Count;
-//		if (size != 0) {
-//			for (int i=size; i>=0; i--) {
-//				Destroy (grounds [i]);
-//				grounds.RemoveAt (i);
-//			}
-//		}
 
 		// init ground gameobject
 		Vector3 gVec = new Vector3 (0, 0, 50);
 		//CreateGrounds (gVec);
 		GameObject obj = (GameObject)Instantiate (prefabs [0], gVec, Quaternion.identity);
 		grounds.Add (obj);
-		isPause = true;
+		isStartingPause = true;
 		ShowSpaceBar ();
 
 		// init keyInfo
-		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
+		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsWebPlayer
+		    || Application.platform == RuntimePlatform.OSXWebPlayer) {
 			Renderer leftTouch = GameObject.Find ("LeftTouch").GetComponent<Renderer> ();
 			leftTouch.material.color = new Vector4 (0, 0, 0, 0);
 			Renderer rightTouch = GameObject.Find ("RightTouch").GetComponent<Renderer> ();
@@ -73,27 +75,28 @@ public class SystemController : MonoBehaviour {
 
 	public void GameOver()
 	{
-		bgSound.Stop ();
+		bgController.PauseBG();
 		playerController.isLive = false;
-		isPause = true;
+		isStartingPause = true;
+		pauseEnabled = false;
 
 		Rigidbody rb = player.gameObject.GetComponent<Rigidbody> ();
 		Vector3 vec = new Vector3 (Mathf.Sin (playerController.radians * Mathf.Deg2Rad), Mathf.Cos (playerController.radians * Mathf.Deg2Rad), -1f);
 		rb.AddForce (vec * playerController.blockingSpeed);
 
 		// game over animation
-//		GameObject obj = GameObject.Find ("HUDCanvas");
-//		Animator anim = obj.GetComponent<Animator> ();
 		anim_gameOver.SetTrigger ("GameOver");
 
 		HUD.SaveData ();
-		Invoke ("Restart", 2);
+		Invoke ("RestartSetting", 2.5f);
 	}
 
-	void Restart()
+	void RestartSetting()
 	{
 		keyAvailable = true;
 		ShowSpaceBar ();
+		ShowPauseMenu(true);
+		SetEnableResumeButton(false);
 	}
 
 	public void CreateGrounds(Vector3 gVec)
@@ -143,16 +146,13 @@ public class SystemController : MonoBehaviour {
 		
 		spacebar.color = new Vector4 (r, g, b, 0f);
 	}
-	public void PlaySounds()
-	{
-		bgSound.Play ();
-	}
 	public void StartGame()
 	{
-		isPause = false;
+		isStartingPause = false;
+		pauseEnabled = true;
 		HideSpaceBar();
-		PlaySounds ();
 		HideKeyInfo ();
+		bgController.PlayBG();
 	}
 
 	public void HideKeyInfo()
@@ -160,5 +160,50 @@ public class SystemController : MonoBehaviour {
 		Destroy( GameObject.Find ("KeyInfo"),1f);
 	}
 
-
+	public void PauseButtonClicked()
+	{
+		if(playerController.isLive)
+		{
+			if(pauseState == false)
+			{
+				Pause();
+			}else{
+				Resume();
+			}
+		}
+	}
+	public void Pause()
+	{
+		Debug.Log("pause!!");
+		Time.timeScale = 0;
+		pauseState = true;
+		ShowPauseMenu(true);
+		bgController.PauseBG();
+	}
+	public void Resume()
+	{
+		Debug.Log("resume!!");
+		Time.timeScale = 1;
+		pauseState = false;
+		ShowPauseMenu(false);
+		bgController.ResumeBG();
+	}
+	public void ShowPauseMenu(bool b)
+	{
+		resumeButton.SetActive(b);
+		restartButton.SetActive(b);
+		mainButton.SetActive(b);
+	}
+	public void SetEnableResumeButton(bool b)
+	{
+		resumeButton.GetComponent<Button>().interactable = b;
+	}
+	public void GoToMainMenuScene()
+	{
+		Application.LoadLevel("MainScene");
+	}
+	public void ReStart()
+	{
+		Application.LoadLevel("GameScene");
+	}
 }

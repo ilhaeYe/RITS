@@ -44,6 +44,10 @@ public class Util : ScriptableObject
         {
             profile["first_name"] = (string)nameH;
         }
+		if (responseObject.TryGetValue("last_name", out nameH))
+		{
+			profile["last_name"] = (string)nameH;
+		}
         return profile;
     }
     

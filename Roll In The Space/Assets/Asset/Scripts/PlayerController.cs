@@ -42,11 +42,11 @@ public class PlayerController : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-		if (isLive && sys.isPause) {
+		if (isLive && sys.isStartingPause) {
 			if (Input.GetKey ("space")) {
 				sys.StartGame ();
 			}
-		} else if (isLive && !sys.isPause) {
+		} else if (isLive && !sys.isStartingPause) {
 			if (speedRun) {
 				speed -= Time.deltaTime * minusSpeed;
 				ballRotateSpeed -= Time.deltaTime * minusBallRotateSpeed;

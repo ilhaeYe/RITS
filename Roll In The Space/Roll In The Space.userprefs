@@ -1,9 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Asset\Scripts\DataManager.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Asset\Scripts\BGPlayerScript.cs">
     <Files>
-      <File FileName="Assets\Asset\Scripts\RankingViewController.cs" Line="148" Column="74" />
-      <File FileName="Assets\Asset\Scripts\DataManager.cs" Line="79" Column="52" />
+      <File FileName="Assets\Asset\Scripts\SystemController.cs" Line="16" Column="28" />
+      <File FileName="Assets\Asset\Scripts\BGPlayerScript.cs" Line="21" Column="1" />
+      <File FileName="Assets\Asset\Scripts\RankingViewController.cs" Line="290" Column="10" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 
 public class HUDController : MonoBehaviour {
@@ -17,8 +18,9 @@ public class HUDController : MonoBehaviour {
 	private int scoreMoveSpeed = 10;
 	private int tempScore;
 
-	//public GameObject DB;
 	private DataManager dataManager;
+	public const int HUDControllerID = 102;
+
 	void Awake()
 	{
 		source = GetComponent<AudioSource> ();
@@ -27,16 +29,39 @@ public class HUDController : MonoBehaviour {
 
 	void Start () {
 		SetDistance ();
-		LoadData ();
-		tempScore = highScore;
-//		playerController = player.GetComponent<PlayerController>();
+		LoadScoreData ();
+		//tempScore = highScore;
 		dataManager = DataManager.Instace;
+		dataManager.OnHttpRequest += OnHttpRequest;
 	}
+
+	public void OnHttpRequest (int request_id, WWW www)
+	{
+		if(request_id == HUDControllerID)
+		{
+			if(www.text.Trim() == string.Empty)	// success
+			{
+				Debug.Log("Update successed");
+				ClientInfoData.score = distance;
+			}else{
+				Debug.Log("Update Failed");
+				try{
+					//SetClientScoreData(www);
+					// TODO pre
+				}catch(Exception e){
+					Debug.Log("Exception ( " + e + " )");
+				}finally{
+					Debug.Log ("finally doing");
+				}
+			}
+		}
+	}
+
 
 	// Update is called once per frame
 	void Update () {
 		SetDistance ();
-		if (distance >= highScore && !emphasize) {
+		if (distance > highScore && !emphasize) {
 			EmphasizeSocre();
 			emphasize = true;
 		}
@@ -57,10 +82,11 @@ public class HUDController : MonoBehaviour {
 	{
 		tempScore += scoreMoveSpeed;
 		if (tempScore < distance)
-			highScoreText.text = "High Score : " + tempScore;
+			highScoreText.text = "High Score : " + tempScore + " AU";
 		else {
 			source.PlayOneShot(tada);
-			highScoreText.text = "High Score : " + distance;
+			highScoreText.text = "High Score : " + distance + " AU";
+			ClientInfoData.score = distance;
 			moveScore = false;
 		}
 	}
@@ -69,24 +95,30 @@ public class HUDController : MonoBehaviour {
 	{
 		if (playerController.isLive) {
 			distance = (int)player.transform.position.z;
-			distanceText.text = "Distance : " + distance;
+			distanceText.text = "Distance : " + distance + " AU";
 		}
 	}
 
-	public void LoadData()
+	public void LoadScoreData()
 	{
-		highScore = PlayerPrefs.GetInt ("HighScore", 0);
-		highScoreText.text = "High Score : " + (int)highScore;
+		highScore = ClientInfoData.score;
+		tempScore = highScore;
 	}
 	public void SaveData()
 	{
-		highScore = PlayerPrefs.GetInt ("HighScore", 0);
-		if (distance > highScore) {
-			PlayerPrefs.SetInt ("HighScore", distance);
-			// TODO :: DB
-			Invoke("ScoreMove",2f);
-			//if(FB.IsLoggedIn)
-				//dataManager.UpdateUserScore(FB.UserId,distance);
+		if(FB.IsLoggedIn)
+		{
+			if(distance > ClientInfoData.score){
+				dataManager.UpdateUserScore(HUDControllerID, FB.UserId,distance, ClientInfoData.fb_full_name);
+				// TODO save clientInfoData
+				Invoke("ScoreMove",2f);
+			}
+		}else{
+			//highScore = PlayerPrefs.GetInt ("HighScore", 0);
+			if (distance > ClientInfoData.score) {
+				PlayerPrefs.SetInt ("HighScore", distance);
+				Invoke("ScoreMove",2f);
+			}
 		}
 	}
 	public void ScoreMove()
@@ -94,6 +126,7 @@ public class HUDController : MonoBehaviour {
 		scoreMoveSpeed = (int)((distance - highScore) * 0.1f);
 		moveScore = true;
 	}
+
 
 
 }

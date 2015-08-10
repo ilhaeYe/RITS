@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using MySql.Data;
-using MySql.Data.MySqlClient;
+//using MySql.Data;
+//using MySql.Data.MySqlClient;
 using System;
-using System.Data;
+//using System.Data;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -31,20 +31,24 @@ public class DataManager : MonoBehaviour {
 	// event Handler
 	public event HttpRequestDelegate OnHttpRequest;
 
-	//bool result = false;
-	//string url = "http://ilhaeye.tk/DBController.php";
-	string baseURL = "http://192.168.219.161/DBController.php";
+	string baseURL = "https://ilhaeye.com/DBController.php";
+	//string baseURL = "http://192.168.219.161/DBController.php";
 	string descURL;
 	const int DEFAULT_GET_DATA_SIZE = 30;
 	private Dictionary<string,string> urlLinkData = new Dictionary<string, string>();
-	//public List<UserData> dataList = new List<UserData>();
+
+	// MD5 Hash
+	private const string _hashKey = "_ilhaeYe0806Rules";
 	
-	public void UpdateUserScore(int request_id, string _fb_id, int _score)
+	public void UpdateUserScore(int request_id, string _fb_id, int _score, string _fb_full_name)
 	{
 		urlLinkData.Clear();
 		urlLinkData.Add("?action=","updateScore");
 		urlLinkData.Add("&fb_id=",_fb_id);
 		urlLinkData.Add("&score=",""+_score);
+		urlLinkData.Add("&fb_name=", _fb_full_name);
+		string hash = MakeHashData();
+		urlLinkData.Add("&hash=",hash);
 
 		MakeURL();
 		//MakeURL("updateScore",_fb_id,_score);
@@ -55,6 +59,8 @@ public class DataManager : MonoBehaviour {
 		urlLinkData.Clear();
 		urlLinkData.Add("?action=","getTargetRank");
 		urlLinkData.Add("&fb_id=",_fb_id);
+//		string hash = MakeHashData();
+//		urlLinkData.Add("&hash=",hash);
 
 		MakeURL();
 		//MakeURL("getTargetRank",_fb_id);
@@ -129,5 +135,32 @@ public class DataManager : MonoBehaviour {
 			Debug.Log("WWW Error : " + www.error);
 		}
 		www.Dispose();
+	}
+
+	public string Md5Sum(string strToEncrypt)
+	{
+		System.Text.UTF8Encoding ue = new System.Text.UTF8Encoding();
+		byte[] bytes = ue.GetBytes(strToEncrypt);
+		
+		// encrypt bytes
+		System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+		byte[] hashBytes = md5.ComputeHash(bytes);
+		
+		// Convert the encrypted bytes back to a string (base 16)
+		string hashString = "";
+		
+		for (int i = 0; i < hashBytes.Length; i++)
+		{
+			hashString += System.Convert.ToString(hashBytes[i], 16).PadLeft(2, '0');
+		}
+		
+		return hashString.PadLeft(32, '0');
+	}
+	private string MakeHashData()
+	{
+		string temp = string.Empty;
+		temp +=	urlLinkData["&fb_id="] + "_" + urlLinkData["&score="] + "_" + urlLinkData["&fb_name="] + "_" + _hashKey;
+		Debug.Log(temp);
+		return Md5Sum(temp);
 	}
 }

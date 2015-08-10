@@ -6,6 +6,7 @@ public class PageButtonScript : MonoBehaviour {
 
 	private Text txt;
 	private int _goToPageIndex;
+	private RankingViewController rvCon;
 	public int goToPageIndex{
 		get{ return _goToPageIndex; }
 		set{ _goToPageIndex = value; }
@@ -43,9 +44,17 @@ public class PageButtonScript : MonoBehaviour {
 			txt.color = tempColor; 
 		}
 	}
+
+	public void OnClicked()
+	{
+		Debug.Log("page button clicked : " + _goToPageIndex);
+		rvCon.OnClickPageButton(_goToPageIndex);
+	}
 	// Use this for initialization
 	void Awake () {
 		txt = transform.Find("Text").GetComponent<Text>();
+		rvCon = GameObject.Find("RankingContainer").GetComponent<RankingViewController>();
+
 	}
 	
 	// Update is called once per frame
