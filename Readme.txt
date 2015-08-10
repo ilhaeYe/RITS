@@ -1,6 +1,7 @@
 ===================================================
 Update Log
 ===================================================
+10.August.2015	:: Fix FB login system & Update BG Sounds UI & System
 23.July.2015	:: Add ranking system & view 
 		:: And backup.
 		
@@ -22,5 +23,6 @@ I hope you understand my poor english.
 
 you can contact me by under the url & email.
  
+https://ilhaeye.com
 http://ilhaeye.blogspot.com
 yeaih89@gmail.com
