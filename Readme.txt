@@ -1,6 +1,7 @@
 ===================================================
 Update Log
 ===================================================
+14.August.2015	:: Change trigger to raycast for dectecting event.
 10.August.2015	:: Fix FB login system & Update BG Sounds UI & System
 23.July.2015	:: Add ranking system & view 
 		:: And backup.
