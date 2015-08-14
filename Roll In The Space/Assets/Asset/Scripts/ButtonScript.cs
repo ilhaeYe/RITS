@@ -5,25 +5,31 @@ using System.Collections.Generic;
 public class ButtonScript : MonoBehaviour {
 
 	public List<GameObject> targets;
+	bool used = false;
 
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
-
-	void OnCollisionEnter(Collision collision)
+	public void ButtonClicked()
 	{
-		if (collision.gameObject.CompareTag ("Player")) {
+		if(!used)
+		{
+			used = true;
 			foreach( GameObject obj in targets )
 			{
 				BlockScript bs = obj.GetComponent<BlockScript>();
 				bs.DoButtonLogic();
 			}
+
 		}
 	}
+
+//	void OnCollisionEnter(Collision collision)
+//	{
+//		if (collision.gameObject.CompareTag ("Player")) {
+//			foreach( GameObject obj in targets )
+//			{
+//				BlockScript bs = obj.GetComponent<BlockScript>();
+//				bs.DoButtonLogic();
+//			}
+//		}
+//	}
 
 }

@@ -3,16 +3,26 @@ using System.Collections;
 
 public class CreateBGScript : MonoBehaviour {
 	private SystemController sys;
-	
+	public bool used = false;
+
 	void Awake()
 	{
 		sys = GameObject.FindGameObjectWithTag ("SystemController").GetComponent<SystemController> ();
 	}
-	
-	void OnTriggerEnter (Collider other)
+
+	public void CreateBackGround()
 	{
-		if (other.gameObject.CompareTag ("Player")) {
-			sys.CreateBackGround (transform.position);
+		if(!used)
+		{
+			used = true;
+			sys.CreateBackGround(transform.position);
 		}
 	}
+
+//	void OnTriggerEnter (Collider other)
+//	{
+//		if (other.gameObject.CompareTag ("Player")) {
+//			sys.CreateBackGround (transform.position);
+//		}
+//	}
 }

@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
 	SystemController sys;
 	Renderer render;
 
+	// ray
+	public float rayDistance;
+		
 	void Start ()
 	{
 		radians = 0f;
@@ -37,6 +40,35 @@ public class PlayerController : MonoBehaviour
 	
 	void Update ()
 	{
+		RaycastHit hit;
+		Ray detectRay = new Ray(transform.position, Vector3.back);
+		
+		//Debug.DrawRay(transform.position, Vector3.back * rayDistance);
+		
+		if(Physics.Raycast(detectRay, out hit))
+		{
+			string tagStr = hit.collider.tag;
+			if(tagStr == "CreateEvent")
+			{
+				CreateGroundScript objCon = hit.transform.GetComponent<CreateGroundScript>();
+				objCon.CreateGround();
+			}
+			if (tagStr == "DeleteEvent")
+			{
+				DeleteGroundScript objCon = hit.transform.GetComponent<DeleteGroundScript>();
+				objCon.DeleteGround();
+			}
+			if (tagStr == "CreateBGEvent")
+			{
+				CreateBGScript objCon = hit.transform.GetComponent<CreateBGScript>();
+				objCon.CreateBackGround();
+			}
+			if ( tagStr == "ButtonClickEvent")
+			{
+				ButtonScript objCon = hit.transform.GetComponent<ButtonScript>();
+				objCon.ButtonClicked();
+			}
+		}
 
 	}
 
@@ -68,21 +100,6 @@ public class PlayerController : MonoBehaviour
 			// toward rotation
 			Vector3 vec = new Vector3 (Mathf.Cos (radians * Mathf.Deg2Rad) * ballRotateSpeed, -Mathf.Sin (radians * Mathf.Deg2Rad) * ballRotateSpeed, 0);
 			transform.Rotate (vec * Time.deltaTime,Space.World);
-
-
-//			if (Input.GetKey ("space") && canJump) {
-//				canJump = false;
-//			}
-//			if (Input.GetKey ("d")) {
-//				float movement = rotateSpeed * Time.deltaTime;
-//				radians += movement;
-//				transform.position = new Vector3 (Mathf.Sin (radians * Mathf.Deg2Rad), Mathf.Cos (radians * Mathf.Deg2Rad), transform.position.z);
-//			}
-//			if (Input.GetKey ("a")) {
-//				float movement = rotateSpeed * Time.deltaTime;
-//				radians -= movement;
-//				transform.position = new Vector3 (Mathf.Sin (radians * Mathf.Deg2Rad), Mathf.Cos (radians * Mathf.Deg2Rad), transform.position.z);
-//			}
 
 			// left & right move
 			float movement = rotateSpeed * Time.deltaTime * Input.GetAxisRaw ("Horizontal");

@@ -4,18 +4,30 @@ using System.Collections;
 public class CreateGroundScript : MonoBehaviour
 {
 	private SystemController sys;
+	bool used = false;
 
 	void Awake()
 	{
 		sys = GameObject.FindGameObjectWithTag ("SystemController").GetComponent<SystemController> ();
 	}
 
-	void OnTriggerEnter (Collider other)
+	public void CreateGround()
 	{
-		if (other.gameObject.CompareTag ("Player")) {
+		if(!used)
+		{
+			used = true;
 			Vector3 gVec = transform.position;
 			gVec.z += 100;
 			sys.CreateGrounds (gVec);
 		}
 	}
+
+//	void OnTriggerEnter (Collider other)
+//	{
+//		if (other.gameObject.CompareTag ("Player")) {
+//			Vector3 gVec = transform.position;
+//			gVec.z += 100;
+//			sys.CreateGrounds (gVec);
+//		}
+//	}
 }

@@ -1,10 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Asset\Scripts\BGPlayerScript.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Asset\Scripts\CreateBGScript.cs">
     <Files>
-      <File FileName="Assets\Asset\Scripts\SystemController.cs" Line="16" Column="28" />
-      <File FileName="Assets\Asset\Scripts\BGPlayerScript.cs" Line="21" Column="1" />
-      <File FileName="Assets\Asset\Scripts\RankingViewController.cs" Line="290" Column="10" />
+      <File FileName="Assets\Asset\Scripts\PlayerController.cs" Line="56" Column="4" />
+      <File FileName="Assets\Asset\Scripts\CreateGroundScript.cs" Line="8" Column="2" />
+      <File FileName="Assets\Asset\Scripts\DeleteGroundScript.cs" Line="7" Column="2" />
+      <File FileName="Assets\Asset\Scripts\ButtonScript.cs" Line="24" Column="5" />
+      <File FileName="Assets\Asset\Scripts\CreateBGScript.cs" Line="26" Column="6" />
+      <File FileName="Assets\Asset\Scripts\SystemController.cs" Line="114" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

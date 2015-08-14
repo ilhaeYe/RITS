@@ -46,7 +46,7 @@ public class SystemController : MonoBehaviour {
 		ShowPauseMenu(false);
 		HUD.LoadScoreData ();
 		keyAvailable = false;
-		player.transform.position = new Vector3(0, 1, 1);
+		player.transform.position = new Vector3(0, playerController.rotatePosition, 1);
 		playerController.isLive = true;
 		backGrounds [0].transform.position = new Vector3(0, 0, 0);
 
