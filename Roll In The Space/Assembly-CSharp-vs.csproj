@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Asset\Scripts\BGPlayerScript.cs" />
      <Compile Include="Assets\Asset\Scripts\BlockScript.cs" />
+     <Compile Include="Assets\Asset\Scripts\BrickParticleScript.cs" />
      <Compile Include="Assets\Asset\Scripts\ButtonScript.cs" />
      <Compile Include="Assets\Asset\Scripts\CameraController.cs" />
      <Compile Include="Assets\Asset\Scripts\ClientInfoData.cs" />
@@ -57,10 +58,12 @@
      <Compile Include="Assets\Asset\Scripts\DebugingScript.cs" />
      <Compile Include="Assets\Asset\Scripts\DeleteGroundScript.cs" />
      <Compile Include="Assets\Asset\Scripts\FBHolder.cs" />
+     <Compile Include="Assets\Asset\Scripts\FireItemScript.cs" />
      <Compile Include="Assets\Asset\Scripts\HUDController.cs" />
      <Compile Include="Assets\Asset\Scripts\HighScoreScript.cs" />
      <Compile Include="Assets\Asset\Scripts\PageButtonScript.cs" />
      <Compile Include="Assets\Asset\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Asset\Scripts\PlayerFireScript.cs" />
      <Compile Include="Assets\Asset\Scripts\RankingViewController.cs" />
      <Compile Include="Assets\Asset\Scripts\SpeedItemScript.cs" />
      <Compile Include="Assets\Asset\Scripts\SystemController.cs" />

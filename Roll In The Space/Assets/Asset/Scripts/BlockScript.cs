@@ -3,7 +3,9 @@ using System.Collections;
 
 public class BlockScript : MonoBehaviour
 {
+	public GameObject brickParticle;
 	public AudioClip blockSound;
+	public AudioClip destroySound;
 	public float step;
 	public Color32 color;
 	
@@ -38,16 +40,26 @@ public class BlockScript : MonoBehaviour
 			sys.GameOver();
 			Renderer r = gameObject.GetComponent<Renderer> ();
 			r.material.color = Color.red;
+		}else if(collision.gameObject.CompareTag ("PlayerFire")){
+			Destroy(collision.gameObject);
+			DestroyBlock();
+			Destroy(gameObject);
 		}
 	}
 	public virtual void DoButtonLogic()
 	{
 
 	}
+
 	public void DestroyBlock()
 	{
-		// TODO
+		source.PlayOneShot(destroySound);
+		Collider col = GetComponent<Collider>();
+		col.enabled = false;
 
+		GameObject obj = (GameObject)Instantiate (brickParticle, transform.position, Quaternion.identity);
+		Renderer r = obj.GetComponent<Renderer>();
+		r.material.color = color;
 	}
 
 }

@@ -13,12 +13,17 @@ public class PlayerController : MonoBehaviour
 	public float minusBallRotateSpeed;
 	public float touchSpeed;
 	public float rotatePosition;
-	public float speedRunSpeed;
+	public float speedRunSpeed = 30.0f;
+	public float speedRunRotation = 500.0f;
+	public float normalSpeed = 15.0f;
+	public float normalRotation = 100.0f;
 	//private bool canJump = true;
 	public bool isLive = true;
-	public bool speedRun = false;
+	//public bool speedRun = false;
+	//public bool fireEnable = false;
 	public Material normalMaterial;
 	public Material itemUpMaterial;
+	public Material fireUpMaterial;
 	SphereCollider sphereCollider;
 	Rigidbody rb;
 	Animator anim;
@@ -27,6 +32,11 @@ public class PlayerController : MonoBehaviour
 
 	// ray
 	public float rayDistance;
+
+	public bool isFireEnable = false;
+	public GameObject fireBall;
+	public float nextFire = 0.0f;
+	public float fireRate = 0.5f;
 		
 	void Start ()
 	{
@@ -79,18 +89,25 @@ public class PlayerController : MonoBehaviour
 				sys.StartGame ();
 			}
 		} else if (isLive && !sys.isStartingPause) {
-			if (speedRun) {
-				speed -= Time.deltaTime * minusSpeed;
-				ballRotateSpeed -= Time.deltaTime * minusBallRotateSpeed;
-				if (speed <= 15) {
-					speedRun = false;
-					speed = 15;
-					sphereCollider.isTrigger = false;
-					ballRotateSpeed = 100;
-				} else if (speed <= 20 && speed >= 19) {
-					render.material = normalMaterial;
-					anim.SetTrigger ("Blink");
-				}
+//			if (speedRun) {
+//				speed -= Time.deltaTime * minusSpeed;
+//				ballRotateSpeed -= Time.deltaTime * minusBallRotateSpeed;
+//				if (speed <= 15) {
+//					speedRun = false;
+//					speed = 15;
+//					sphereCollider.isTrigger = false;
+//					ballRotateSpeed = 100;
+//				} else if (speed <= 20 && speed >= 19) {
+//					render.material = normalMaterial;
+//					anim.SetTrigger ("Blink");
+//				}
+//			}
+			if (isFireEnable && Input.GetKey("space") && Time.time > nextFire)
+			{
+				nextFire = Time.time + fireRate;
+				Vector3 pos = transform.position;
+				GameObject ball = (GameObject) Instantiate(fireBall, new Vector3(pos.x,pos.y,pos.z+2), Quaternion.identity);
+
 			}
 			// toward move
 			float moveSpeed = speed * Time.deltaTime;
@@ -120,9 +137,37 @@ public class PlayerController : MonoBehaviour
 	public void SpeedRun ()
 	{
 		speed = speedRunSpeed;
-		ballRotateSpeed = 500;
-		speedRun = true;
+		ballRotateSpeed = speedRunRotation;
+		//speedRun = true;
 		sphereCollider.isTrigger = true;
 		render.material = itemUpMaterial;
+		Invoke("BlankPlayer", 3.0f);
+		Invoke("SpeedDown", 5.0f);
+	}
+	public void SpeedDown()
+	{
+		//speedRun = false;
+		speed = normalSpeed;
+		ballRotateSpeed = normalRotation;
+		sphereCollider.isTrigger = false;
+		render.material = normalMaterial;
+	}
+	public void FireUp()
+	{
+		isFireEnable = true;
+		render.material = fireUpMaterial;
+		Invoke("BlankPlayer", 3.0f);
+		Invoke("FireDown", 5.0f);
+		// spacebar
+	}
+	public void FireDown()
+	{
+		isFireEnable = false;
+		render.material = normalMaterial;
+		// spacebar
+	}
+	public void BlankPlayer()
+	{
+		anim.SetTrigger ("Blink");
 	}
 }

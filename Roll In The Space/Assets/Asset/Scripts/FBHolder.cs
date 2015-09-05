@@ -21,12 +21,12 @@ public class FBHolder : MonoBehaviour
 
 	private Dictionary<string,string> profile = null;
 	private List<object> fList = null;
-	private DebugingScript ds;
+	//private DebugingScript ds;
 	void Awake ()
 	{
 		//dataManager = DB.GetComponent<DataManager>();
 		//cid = ClientInfoData.Instance;
-		ds = GameObject.Find("DebugObject").GetComponent<DebugingScript>();
+		//ds = GameObject.Find("DebugObject").GetComponent<DebugingScript>();
 		if(RankingView != null) rankingViewController = RankingView.GetComponent<RankingViewController>();
 		DealWithFBMenus(false);
 
@@ -34,11 +34,11 @@ public class FBHolder : MonoBehaviour
 		FB.Init (SetInit, OnHideUnity);
 		if (!FB.IsLoggedIn) {
 			Debug.Log("Didn't login");
-			ds.debugTxt += "Didn't login\n";
+			//ds.debugTxt += "Didn't login\n";
 
 			DoThingsAfterNotLoggedIn();
 		}else{
-			ds.debugTxt = "Already logged in\n";
+			//ds.debugTxt = "Already logged in\n";
 
 			DoThingsAfterLoggedIn();
 		}
@@ -47,11 +47,11 @@ public class FBHolder : MonoBehaviour
 	private void SetInit ()
 	{
 		Debug.Log ("FB Init done.");
-		ds.debugTxt += "FB Init done.\n";
+		//ds.debugTxt += "FB Init done.\n";
 		//enabled = true; // "enabled" is a property inherited from MonoBehaviour                  
 		if (FB.IsLoggedIn) {
 			Debug.Log ("Already logged in");
-			ds.debugTxt += "Already logged in\n";
+			//ds.debugTxt += "Already logged in\n";
 			DoThingsAfterLoggedIn();
 		}else{
 			DoThingsAfterNotLoggedIn();
@@ -61,7 +61,7 @@ public class FBHolder : MonoBehaviour
 	private void OnHideUnity (bool isGameShown)
 	{                                                                                            
 		Debug.Log ("OnHideUnity");                     
-		ds.debugTxt += "OnHideUnity";
+		//ds.debugTxt += "OnHideUnity";
 
 		if (!isGameShown) {                                                                                        
 			// pause the game - we will need to hide                                             
@@ -88,7 +88,7 @@ public class FBHolder : MonoBehaviour
 	void DoThingsAfterLoggedIn()
 	{
 		Debug.Log ("FB login worked!");
-		ds.debugTxt += "FB login worked!\n";
+		//ds.debugTxt += "FB login worked!\n";
 		
 		DealWithFBMenus(true);
 		GetMyRankingAreaData();
@@ -97,7 +97,7 @@ public class FBHolder : MonoBehaviour
 	void DoThingsAfterNotLoggedIn()
 	{
 		Debug.Log ("FB login fail!");
-		ds.debugTxt += "FB login fail!\n";
+		//ds.debugTxt += "FB login fail!\n";
 		
 		DealWithFBMenus(false);
 		NotLoggedInGetScoreData();
@@ -132,7 +132,7 @@ public class FBHolder : MonoBehaviour
 		if(result.Error != null)
 		{
 			Debug.Log("problem with getting profile picture");
-			ds.debugTxt += "problem with getting profile picture\n";
+			//ds.debugTxt += "problem with getting profile picture\n";
 
 			FB.API(Util.GetPictureURL("me", 128, 128), Facebook.HttpMethod.GET, DealWithProfilePicture);
 			return;
@@ -145,13 +145,13 @@ public class FBHolder : MonoBehaviour
 		if(result.Error != null)
 		{
 			Debug.Log("problem with getting profile picture");
-			ds.debugTxt += "problem with getting profile picture\n";
+			//ds.debugTxt += "problem with getting profile picture\n";
 			FB.API("/me?fields=id,first_name", Facebook.HttpMethod.GET, DealWithUserName);
 			return;
 		}
 		profile = Util.DeserializeJSONProfile(result.Text);
 		Debug.Log(result.Text);
-		ds.debugTxt += result.Text;
+		//ds.debugTxt += result.Text;
 
 		Text UserMsg = UIFBUserName.GetComponent<Text>();
 		string first_name = profile["first_name"];
@@ -164,7 +164,7 @@ public class FBHolder : MonoBehaviour
 
 	public void ShareWithFriends()
 	{
-		ds.debugTxt += "ShareButtonClicked!\n";
+		//ds.debugTxt += "ShareButtonClicked!\n";
 		FB.Feed(
 			linkCaption: "I'm playing this awesome game",
 			picture: "http://ilhaeye.com/RITS/icon.png",
@@ -176,7 +176,7 @@ public class FBHolder : MonoBehaviour
 	}
 	public void InviteFriends()
 	{
-		ds.debugTxt += "InviteButtonClicked!\n";
+		//ds.debugTxt += "InviteButtonClicked!\n";
 		FB.AppRequest(
 			message: "This game is awesome, join me now!",
 			title: "Invite your friends to join you"
@@ -198,7 +198,7 @@ public class FBHolder : MonoBehaviour
 		Debug.Log(fList.Count);
 
 		string debugTxt = result.Text + "\n cnt : " + fList.Count;
-		ds.debugTxt += debugTxt;
+		//ds.debugTxt += debugTxt;
 
 	}
 
@@ -211,7 +211,7 @@ public class FBHolder : MonoBehaviour
 				rankingViewController.GetMyPageInAllRanking();
 			}else{
 				Debug.Log("RankingView is null");
-				ds.debugTxt += "RankingView is null\n";
+				//ds.debugTxt += "RankingView is null\n";
 
 				// in game scene
 				DataManager dm = DataManager.Instace;
