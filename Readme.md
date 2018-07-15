@@ -1,6 +1,8 @@
+```
 ===================================================
 Update Log
 ===================================================
+16.July.2018	:: Update Readme.txt
 14.August.2015	:: Change trigger to raycast for dectecting event.
 10.August.2015	:: Fix FB login system & Update BG Sounds UI & System
 23.July.2015	:: Add ranking system & view 
@@ -18,12 +20,17 @@ You can roll a ball in the space while listening to good music.
 
 Thank you
 ===================================================
+```
+![desc](/pic/RITS.png)
+```
+===================================================
 I'm from south korea.
 I'm studying english harder.
 I hope you understand my poor english.
 
 you can contact me by under the url & email.
- 
-https://ilhaeye.com
-http://ilhaeye.blogspot.com
-yeaih89@gmail.com
+
+```
+* youtube url : https://youtu.be/Rp3fz_MD5uk 
+* http://ilhaeye.blogspot.com
+* yeaih89@gmail.com
